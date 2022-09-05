@@ -7,10 +7,8 @@ import itertools
 import osmnx as ox
 import numpy as np
 from math import exp
-from tqdm import tqdm
 from networkx import shortest_simple_paths
 from collections import defaultdict
-from itertools import combinations
 
 
 G = pickle.load(open("../dataset/road_graph.pkl", "rb"))
@@ -48,7 +46,6 @@ for node, info in G.nodes(data=True):
         edge_to_pred_succ_index[edge]["succ"] = i
 
 shortest_path_results = pickle.load(open("data/shortest_path_results.pkl", "rb"))
-
 
 def gauss(v, mu):
     sigma = mu * SIGMA_RATIO
@@ -198,20 +195,3 @@ def MAP_routing_return_edge_route(u, v, ut, vt, k=K):
         routes.append(route)
     t = posteriors.index(max(posteriors))
     return routes[t], max(posteriors[t], 1e-12)
-
-
-if __name__ == "__main__":
-    cameras = pickle.load(open("../dataset/camera_info.pkl", "rb"))
-    camera_nodes = [x["node_id"] for x in cameras]
-    camera_nodes = set(camera_nodes)
-    shortest_path_results = {}
-    for u in tqdm(camera_nodes):
-        for v in camera_nodes:
-            if u != v:
-                try:
-                    paths = [x for x in my_k_shortest_paths(u, v, 10)]
-                    shortest_path_results[(u, v)] = paths
-                except:
-                    pass
-    print(len(shortest_path_results))
-    pickle.dump(shortest_path_results, open("data/shortest_path_results.pkl", "wb"))

@@ -2,11 +2,13 @@
 implementation of the iterative framework:
 do the clustering and the feedback
 """
+import os
 import pickle
 import time
 import random
 import numpy as np
 import json
+from tqdm import tqdm
 from math import ceil, sqrt
 from multiprocessing import Pool
 from cluster_algorithm import SigCluster, FlatSearcher
@@ -14,7 +16,7 @@ from eval import evaluate
 from itertools import combinations
 from copy import deepcopy
 from collections import defaultdict
-from routing import MAP_routing, MAP_routing_return_route
+from routing import MAP_routing, MAP_routing_return_route, my_k_shortest_paths
 
 
 random.seed(233)
@@ -700,6 +702,24 @@ if __name__ == "__main__":
     topK = 128
     ngpu = 3
     metrics = []
+
+    cache_path = "data/shortest_path_results_test.pkl"
+    if not os.path.exists(cache_path):
+        print("pre-computing...")
+        camera_nodes = [x["node_id"] for x in cameras]
+        camera_nodes = set(camera_nodes)
+        shortest_path_results = {}
+        for u in tqdm(camera_nodes):
+            for v in camera_nodes:
+                if u != v:
+                    try:
+                        paths = [x for x in my_k_shortest_paths(u, v, 10)]
+                        shortest_path_results[(u, v)] = paths
+                    except:
+                        pass
+        print(len(shortest_path_results))
+        pickle.dump(shortest_path_results, open(cache_path, "wb"))
+
     for i, operation in zip(range(N_iter), ["merge", "denoise"] * (N_iter // 2)):
 
         print(f"---------- iter {i} -----------")
