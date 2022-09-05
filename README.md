@@ -29,7 +29,8 @@ pip install -r requirements.txt
 - The directory "preprocessor" consists of road speed calculation & complementation(calculate_speed.py & train_speed.py) and road transition statistics(prior_statistics.py) based on map-matched historical trajectories.
 - Due to the privacy concern, historical trajectories are not open access, thus these codes are not runnable. In substitute, the outputs of this directory which are used by directory "main" are saved as files in the directory "dataset".
 ### ./dataset/
-- The directory "dataset" consists of the camera information, the camera records dataset(100w) which are visual embeddings of each record, and the road graph, as well as those outputs of directory "preprocessor" as mentioned above. Note that the camera records dataset is too large to be put in this repository, and you can download it at [here](https://cloud.tsinghua.edu.cn/f/d9e002b0e0ec4527b861/?dl=1).
+- The directory "dataset" consists of the camera information, the camera records dataset(100w) which are visual embeddings of each record, and the road graph, as well as those outputs of directory "preprocessor" as mentioned above.
+- Note that the camera records dataset is too large to be put in this repository, and you can download it at [here](https://cloud.tsinghua.edu.cn/f/d9e002b0e0ec4527b861/?dl=1).
 
 ### ./main/
 - The directory "main" is the implementation of our framework, consisting of vehicle Re-ID clusering(cluster_algorithm.py) and trajectory recovery(routing.py), and the top module(run.py) that implements the spatio-temporal feedback and the iterative framework. Finally, eval.py implements the metric calculation to evaluate the clustering.
