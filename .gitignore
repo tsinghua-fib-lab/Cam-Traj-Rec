@@ -1,0 +1,15 @@
+__pycache__
+dataset/records_100w_pca_64.pkl
+main/data/*
+!main/data/.gitkeep
+main/figure/*
+!main/figure/.gitkeep
+main/label/*
+!main/label/.gitkeep
+main/metric/*
+!main/metric/.gitkeep
+preprocessor/data/*
+!preprocessor/data/.gitkeep
+preprocessor/figure/*
+!preprocessor/figure/.gitkeep
+make_safe_dataset.py

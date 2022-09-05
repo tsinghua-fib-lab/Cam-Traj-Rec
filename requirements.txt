@@ -1,0 +1,7 @@
+numpy == 1.21.3
+faiss == 1.5.3
+coloredlogs == 15.0.1
+scikit-learn == 1.0.2
+osmnx == 1.1.2
+networkx == 2.6.3
+shapely == 1.8.0
