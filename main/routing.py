@@ -2,6 +2,7 @@
 the implementation of prior/likelihood/posterior probilities
 infer the MAP path
 """
+import os
 import pickle
 import itertools
 import osmnx as ox
@@ -45,7 +46,30 @@ for node, info in G.nodes(data=True):
     for i, edge in enumerate(info["succ"]):
         edge_to_pred_succ_index[edge]["succ"] = i
 
-shortest_path_results = pickle.load(open("data/shortest_path_results.pkl", "rb"))
+
+def my_k_shortest_paths(u, v, k):
+    paths_gen = shortest_simple_paths(G_di, u, v, "length")
+    for path in itertools.islice(paths_gen, 0, k):
+        yield path
+
+
+path = "data/shortest_path_results.pkl"
+if os.path.exists(path):
+    shortest_path_results = pickle.load(open("data/shortest_path_results.pkl", "rb"))
+else:
+    print("Pre-calculating paths between cameras...")
+    cameras = pickle.load(open("../dataset/camera_info.pkl", "rb"))
+    camera_nodes = set(x['node_id'] for x in cameras)
+    shortest_path_results = {}
+    for u in camera_nodes:
+        for v in camera_nodes:
+            if u != v:
+                try:
+                    shortest_path_results[(u, v)] = [x for x in my_k_shortest_paths(u, v, 10)]
+                except:
+                    pass
+    pickle.dump(shortest_path_results, open(path, "wb"))
+
 
 def gauss(v, mu):
     sigma = mu * SIGMA_RATIO
@@ -103,12 +127,6 @@ def route_prior(route, return_p_nostart=False):
         return p_start * p_nostart, p_nostart
     else:
         return p_start * p_nostart
-
-
-def my_k_shortest_paths(u, v, k):
-    paths_gen = shortest_simple_paths(G_di, u, v, "length")
-    for path in itertools.islice(paths_gen, 0, k):
-        yield path
 
 
 def read_k_shortest_path(u, v, k):
