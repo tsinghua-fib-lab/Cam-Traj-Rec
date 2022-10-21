@@ -15,8 +15,8 @@ lon, lat = 111, 22
           [901,   # 路网中的edge_id, 匹配路径的第一条路
            [      # 匹配到这条路上的所有轨迹点
             {'order': 0,  # 轨迹点在原始经纬度轨迹中的索引
-             'orig_point': [lon, lat, 6467.0],  # 匹配后投影到路上的轨迹点[lon, lat, t]
-             'point': [lon, lat, 6467.0]},      # 原始轨迹点
+             'orig_point': [lon, lat, 6467.0],  # 原始轨迹点[lon, lat, t]
+             'point': [lon, lat, 6467.0]},      # 匹配后投影到路上的轨迹点
             {'order': 1,
              'orig_point': [lon, lat, 6478.0],
              'point': [lon, lat, 6478.0]},
